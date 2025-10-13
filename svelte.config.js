@@ -1,27 +1,12 @@
-import preprocess from 'svelte-preprocess';
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-cloudflare';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
+	// Consult https://svelte.dev/docs/kit/integrations
 	// for more information about preprocessors
-	preprocess: preprocess(),
-
-	kit: {
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
-		adapter: adapter({
-			// entryPoint: 'src/server.ts',
-			esbuild: (options) => {
-				return {
-					...options,
-					platform: 'node',
-					format: 'esm',
-					target: 'node16'
-				};
-			}
-		})
-	}
+	preprocess: vitePreprocess(),
+	kit: { adapter: adapter() }
 };
 
 export default config;
