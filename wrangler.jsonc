@@ -20,7 +20,13 @@
 	"routes": [
 		{
 			"custom_domain": true,
-			"pattern": "malvpatel.com",
+			"pattern": "malvpatel.com"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "auth",
+			"id": "6704b86e18c44f4d8511b473042de5dd"
 		}
 	]
 	/**
