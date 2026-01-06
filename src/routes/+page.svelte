@@ -1,20 +1,35 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import f3data from '$assets/fam.json';
 
-	import * as f3 from '$lib/family-chart';
-	import '$lib/family-chart/styles/family-chart.css';
+	import * as f3 from '@/family-chart';
+	import '@/family-chart/styles/family-chart.css';
+	import { getEntities } from '@/db/entities.remote.js';
 
 	let { data } = $props();
+</script>
 
-	let chartContainer;
+{#await getEntities([3])}
+	<p>Loading data...</p>
+{:then data}
+	<div
+		class="f3"
+		id="FamilyChart"
+		style="width:100%;height:900px;margin:auto;background-color:rgb(33,33,33);color:#fff;"
+		{@attach (ele) => {
+			let localF3Data = localStorage.getItem('f3Data');
 
-	onMount(() => {
-		if (!chartContainer) return;
-		create(data());
+			console.log('localF3Data', localF3Data);
 
-		function create(data) {
+			if (!localF3Data) {
+				console.log('I was updated');
+				localStorage.setItem('f3Data', JSON.stringify(f3data));
+				localF3Data = localStorage.getItem('f3Data');
+			}
+
+			const parsedF3Data = JSON.parse(localStorage.getItem('f3Data')!);
+
 			const f3Chart = f3
-				.createChart('#FamilyChart', data)
+				.createChart(ele, parsedF3Data)
 				.setTransitionTime(1000)
 				.setCardXSpacing(250)
 				.setCardYSpacing(150)
@@ -24,7 +39,10 @@
 
 			const f3Card = f3Chart
 				.setCardHtml()
-				.setCardDisplay([['first name', 'last name'], ['birthday']])
+				.setCardDisplay([
+					['first name', 'last name']
+					// ['birthday']
+				])
 				.setCardDim(null)
 				.setMiniTree(true)
 				.setStyle('imageRect')
@@ -42,31 +60,14 @@
 			f3Chart.updateTree({ initial: true });
 			f3EditTree.open(f3Chart.getMainDatum());
 
-			f3Chart.updateTree({ initial: true });
-		}
+			f3EditTree.setOnChange(() => {
+				console.log(localStorage.getItem('f3Data'));
 
-		function data() {
-			return [
-				{
-					id: '0',
-					rels: {},
-					data: {
-						'first name': 'Name',
-						'last name': 'Surname',
-						birthday: 1970,
-						avatar:
-							'https://static8.depositphotos.com/1009634/988/v/950/depositphotos_9883921-stock-illustration-no-user-profile-picture.jpg',
-						gender: 'M'
-					}
-				}
-			];
-		}
-	});
-</script>
-
-<div
-	class="f3"
-	id="FamilyChart"
-	bind:this={chartContainer}
-	style="width:100%;height:900px;margin:auto;background-color:rgb(33,33,33);color:#fff;"
-></div>
+				localStorage.setItem('f3Data', JSON.stringify(f3Chart.store.getData()));
+			});
+		}}
+	></div>
+	<pre>{JSON.stringify(data, null, 2)}</pre>
+{:catch error}
+	<p>Error loading data: {error.message}</p>
+{/await}

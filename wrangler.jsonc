@@ -28,6 +28,13 @@
 			"binding": "auth",
 			"id": "6704b86e18c44f4d8511b473042de5dd"
 		}
+	],
+	"d1_databases": [
+		{
+			"binding": "FAMTREE",
+			"database_name": "famtree",
+			"database_id": "fdc2ca7d-32a2-4328-9bbc-a825db92ab2a"
+		}
 	]
 	/**
 	 * Smart Placement
