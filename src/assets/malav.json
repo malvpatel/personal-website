@@ -1,0 +1,218 @@
+[
+	{
+		"id": "0",
+		"rels": {
+			"parents": ["9e9e8833-8463-47ab-848d-d3ec9bcbde2e", "8c75ce8f-2373-4fc1-9a53-bf22eb981878"],
+			"spouses": ["b97b8bd3-798f-47fb-b328-83f27ac809b1"]
+		},
+		"data": {
+			"first name": "Malav",
+			"last name": "Patel",
+			"birthday": "1970",
+			"avatar": "https://static8.depositphotos.com/1009634/988/v/950/depositphotos_9883921-stock-illustration-no-user-profile-picture.jpg",
+			"gender": "M"
+		}
+	},
+	{
+		"id": "9e9e8833-8463-47ab-848d-d3ec9bcbde2e",
+		"data": {
+			"gender": "M",
+			"first name": "Prashant",
+			"last name": "Patel",
+			"birthday": "1970",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["5e90c28b-80fe-43f4-a054-8f1f892508be", "c95220fb-6064-4aca-9435-e93ad4a12dc4"],
+			"children": ["0"],
+			"spouses": ["8c75ce8f-2373-4fc1-9a53-bf22eb981878"]
+		}
+	},
+	{
+		"id": "8c75ce8f-2373-4fc1-9a53-bf22eb981878",
+		"data": {
+			"gender": "F",
+			"first name": "Parul",
+			"last name": "Patel",
+			"birthday": "1973",
+			"avatar": ""
+		},
+		"rels": {
+			"children": ["0"],
+			"spouses": ["9e9e8833-8463-47ab-848d-d3ec9bcbde2e"]
+		}
+	},
+	{
+		"id": "b97b8bd3-798f-47fb-b328-83f27ac809b1",
+		"data": {
+			"gender": "F",
+			"first name": "Diya",
+			"last name": "Patel",
+			"birthday": "2003",
+			"avatar": ""
+		},
+		"rels": {
+			"spouses": ["0"]
+		}
+	},
+	{
+		"id": "5e90c28b-80fe-43f4-a054-8f1f892508be",
+		"data": {
+			"gender": "M",
+			"first name": "Girish",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"children": [
+				"9e9e8833-8463-47ab-848d-d3ec9bcbde2e",
+				"86a4b76a-7dbc-42e0-8591-0525bcd6032f",
+				"61827954-063a-4aa6-bc58-32fc4c4ffc9e"
+			],
+			"spouses": ["c95220fb-6064-4aca-9435-e93ad4a12dc4"]
+		}
+	},
+	{
+		"id": "c95220fb-6064-4aca-9435-e93ad4a12dc4",
+		"data": {
+			"gender": "F",
+			"first name": "Sumitra",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"children": [
+				"9e9e8833-8463-47ab-848d-d3ec9bcbde2e",
+				"86a4b76a-7dbc-42e0-8591-0525bcd6032f",
+				"61827954-063a-4aa6-bc58-32fc4c4ffc9e"
+			],
+			"spouses": ["5e90c28b-80fe-43f4-a054-8f1f892508be"]
+		}
+	},
+	{
+		"id": "86a4b76a-7dbc-42e0-8591-0525bcd6032f",
+		"data": {
+			"gender": "F",
+			"first name": "Seema",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["5e90c28b-80fe-43f4-a054-8f1f892508be", "c95220fb-6064-4aca-9435-e93ad4a12dc4"],
+			"children": ["0289bf92-5649-499b-b301-5b1f72dab13e", "53eb5e2a-ea61-417c-9e36-85d9e126e351"],
+			"spouses": ["dd7bfbda-2177-49a1-9970-fb736d66f65a"]
+		}
+	},
+	{
+		"id": "61827954-063a-4aa6-bc58-32fc4c4ffc9e",
+		"data": {
+			"gender": "F",
+			"first name": "Mamta",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["5e90c28b-80fe-43f4-a054-8f1f892508be", "c95220fb-6064-4aca-9435-e93ad4a12dc4"]
+		}
+	},
+	{
+		"id": "dd7bfbda-2177-49a1-9970-fb736d66f65a",
+		"data": {
+			"gender": "M",
+			"first name": "Atul",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"children": ["0289bf92-5649-499b-b301-5b1f72dab13e", "53eb5e2a-ea61-417c-9e36-85d9e126e351"],
+			"spouses": ["86a4b76a-7dbc-42e0-8591-0525bcd6032f"]
+		}
+	},
+	{
+		"id": "0289bf92-5649-499b-b301-5b1f72dab13e",
+		"data": {
+			"gender": "M",
+			"first name": "Haimil",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["86a4b76a-7dbc-42e0-8591-0525bcd6032f", "dd7bfbda-2177-49a1-9970-fb736d66f65a"],
+			"spouses": ["50a84807-d7a1-47d1-9146-4406da0f2df5"]
+		}
+	},
+	{
+		"id": "53eb5e2a-ea61-417c-9e36-85d9e126e351",
+		"data": {
+			"gender": "F",
+			"first name": "Krishna",
+			"last name": "Shah",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["86a4b76a-7dbc-42e0-8591-0525bcd6032f", "dd7bfbda-2177-49a1-9970-fb736d66f65a"],
+			"children": ["0ceb7912-0175-492a-b837-407fcc0904d4", "7d1dd949-e629-439c-9586-48bb488e208f"],
+			"spouses": ["e3c6092e-dbd6-4742-9b1e-96e80e5853e9"]
+		}
+	},
+	{
+		"id": "50a84807-d7a1-47d1-9146-4406da0f2df5",
+		"data": {
+			"gender": "F",
+			"first name": "Shailey",
+			"last name": "Patel",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"spouses": ["0289bf92-5649-499b-b301-5b1f72dab13e"]
+		}
+	},
+	{
+		"id": "e3c6092e-dbd6-4742-9b1e-96e80e5853e9",
+		"data": {
+			"gender": "M",
+			"first name": "Aditya",
+			"last name": "Shah",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"children": ["0ceb7912-0175-492a-b837-407fcc0904d4", "7d1dd949-e629-439c-9586-48bb488e208f"],
+			"spouses": ["53eb5e2a-ea61-417c-9e36-85d9e126e351"]
+		}
+	},
+	{
+		"id": "0ceb7912-0175-492a-b837-407fcc0904d4",
+		"data": {
+			"gender": "M",
+			"first name": "Kiaan",
+			"last name": "Shah",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["53eb5e2a-ea61-417c-9e36-85d9e126e351", "e3c6092e-dbd6-4742-9b1e-96e80e5853e9"]
+		}
+	},
+	{
+		"id": "7d1dd949-e629-439c-9586-48bb488e208f",
+		"data": {
+			"gender": "F",
+			"first name": "Aanvi",
+			"last name": "Shah",
+			"birthday": "",
+			"avatar": ""
+		},
+		"rels": {
+			"parents": ["53eb5e2a-ea61-417c-9e36-85d9e126e351", "e3c6092e-dbd6-4742-9b1e-96e80e5853e9"]
+		}
+	}
+]

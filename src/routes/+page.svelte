@@ -1,14 +1,21 @@
 <script lang="ts">
-	import f3data from '$assets/fam.json';
+	// import f3data from '$assets/fam.json';
+	// import * as f3 from '@/family-chart';
+	// import '@/family-chart/styles/family-chart.css';
 
-	import * as f3 from '@/family-chart';
-	import '@/family-chart/styles/family-chart.css';
-	import { getEntities } from '@/db/entities.remote.js';
+	// import { getEntities } from '@/db/entities.remote.js';
 
 	let { data } = $props();
 </script>
 
-{#await getEntities([3])}
+<main>
+	<pre>
+		I will print json 
+		{JSON.stringify(data)}
+	</pre>
+</main>
+
+<!-- {#await getEntities([3])}
 	<p>Loading data...</p>
 {:then data}
 	<div
@@ -70,4 +77,4 @@
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 {:catch error}
 	<p>Error loading data: {error.message}</p>
-{/await}
+{/await} -->
