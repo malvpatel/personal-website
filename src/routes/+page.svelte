@@ -1,80 +1,110 @@
 <script lang="ts">
-	// import f3data from '$assets/fam.json';
 	// import * as f3 from '@/family-chart';
-	// import '@/family-chart/styles/family-chart.css';
+	import '@/family-chart/styles/family-chart.css';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import type { Person, Union, ParentChild } from '../db/schema';
+	import FamilyTreeViewer from '@/components/family-tree/viewer/viewer.svelte';
+	import FamilyCard from '@/components/family-card.svelte';
 
-	// import { getEntities } from '@/db/entities.remote.js';
+	let { data }: { data: PageData } = $props();
 
-	let { data } = $props();
+	$effect(() => {
+		console.log('Page data:', data);
+	});
+
+	function transformToF3Data(
+		persons: Person[],
+		unions: Union[],
+		links: ParentChild[]
+	) {
+		const f3Data = persons.map((p) => {
+			const personId = p.id;
+
+			// Find spouses
+			const spouses = unions
+				.filter((u) => u.partner1Id === personId || u.partner2Id === personId)
+				.map((u) => (u.partner1Id === personId ? u.partner2Id : u.partner1Id))
+				.filter((id): id is number => id !== null)
+				.map(String);
+
+			// Find children (where I am the parent)
+			const children = links
+				.filter((l) => l.parentId === personId)
+				.map((l) => String(l.childId));
+
+			// Find parents (where I am the child)
+			const parents = links
+				.filter((l) => l.childId === personId)
+				.map((l) => String(l.parentId));
+
+			return {
+				id: String(p.id),
+				data: {
+					'first name': p.firstName,
+					'last name': p.lastName,
+					birthday: p.dateOfBirth,
+					avatar: p.avatarUrl,
+					gender: (p.gender === 'male'
+						? 'M'
+						: p.gender === 'female'
+							? 'F'
+							: 'M') as 'M' | 'F'
+				},
+				rels: {
+					spouses,
+					children,
+					parents
+				}
+			};
+		});
+
+		return f3Data;
+	}
+
+	let chartContainer: HTMLElement;
+
+	onMount(() => {
+		// if (!data.persons.length) return;
+		// const parsedF3Data = transformToF3Data(
+		// 	data.persons,
+		// 	data.unions,
+		// 	data.links
+		// );
+		// // Find main person (try ID 1 since we re-seeded)
+		// const mainPerson =
+		// 	parsedF3Data.find((p) => p.id === '1') || parsedF3Data[0];
+		// const f3Chart = f3
+		// 	.createChart(chartContainer, parsedF3Data)
+		// 	.setTransitionTime(1000)
+		// 	.setCardXSpacing(250)
+		// 	.setCardYSpacing(150)
+		// 	.setSingleParentEmptyCard(true, { label: 'ADD' })
+		// 	.setShowSiblingsOfMain(false)
+		// 	.setOrientationVertical();
+		// const f3Card = f3Chart
+		// 	.setCardHtml()
+		// 	.setCardDisplay([['first name', 'last name'], ['birthday']])
+		// 	.setMiniTree(true)
+		// 	.setStyle('imageRect')
+		// 	.setOnHoverPathToMain();
+		// const f3EditTree = f3Chart
+		// 	.editTree()
+		// 	.fixed()
+		// 	.setFields(['first name', 'last name', 'birthday', 'avatar'])
+		// 	.setEditFirst(true)
+		// 	.setCardClickOpen(f3Card);
+		// f3EditTree.setEdit();
+		// f3Chart.updateTree({ initial: true });
+		// if (mainPerson) {
+		// 	// @ts-ignore - library typing issue
+		// 	f3EditTree.open(mainPerson.id);
+		// }
+	});
 </script>
 
-<main>
-	<pre>
-		I will print json 
-		{JSON.stringify(data)}
-	</pre>
+<main class="h-full">
+	<FamilyTreeViewer>
+		<FamilyCard layout={{ x: 100, y: 100, width: 150, height: 100 }} />
+	</FamilyTreeViewer>
 </main>
-
-<!-- {#await getEntities([3])}
-	<p>Loading data...</p>
-{:then data}
-	<div
-		class="f3"
-		id="FamilyChart"
-		style="width:100%;height:900px;margin:auto;background-color:rgb(33,33,33);color:#fff;"
-		{@attach (ele) => {
-			let localF3Data = localStorage.getItem('f3Data');
-
-			console.log('localF3Data', localF3Data);
-
-			if (!localF3Data) {
-				console.log('I was updated');
-				localStorage.setItem('f3Data', JSON.stringify(f3data));
-				localF3Data = localStorage.getItem('f3Data');
-			}
-
-			const parsedF3Data = JSON.parse(localStorage.getItem('f3Data')!);
-
-			const f3Chart = f3
-				.createChart(ele, parsedF3Data)
-				.setTransitionTime(1000)
-				.setCardXSpacing(250)
-				.setCardYSpacing(150)
-				.setSingleParentEmptyCard(true, { label: 'ADD' })
-				.setShowSiblingsOfMain(false)
-				.setOrientationVertical();
-
-			const f3Card = f3Chart
-				.setCardHtml()
-				.setCardDisplay([
-					['first name', 'last name']
-					// ['birthday']
-				])
-				.setCardDim(null)
-				.setMiniTree(true)
-				.setStyle('imageRect')
-				.setOnHoverPathToMain();
-
-			const f3EditTree = f3Chart
-				.editTree()
-				.fixed(true)
-				.setFields(['first name', 'last name', 'birthday', 'avatar'])
-				.setEditFirst(true)
-				.setCardClickOpen(f3Card);
-
-			f3EditTree.setEdit();
-
-			f3Chart.updateTree({ initial: true });
-			f3EditTree.open(f3Chart.getMainDatum());
-
-			f3EditTree.setOnChange(() => {
-				console.log(localStorage.getItem('f3Data'));
-
-				localStorage.setItem('f3Data', JSON.stringify(f3Chart.store.getData()));
-			});
-		}}
-	></div>
-	<pre>{JSON.stringify(data, null, 2)}</pre>
-{:catch error}
-	<p>Error loading data: {error.message}</p>
-{/await} -->

@@ -102,14 +102,22 @@ export class Sql<T = unknown> {
 /**
  * Create a SQL query for a list of values.
  */
-export function join(values: readonly RawValue[], separator = ',', prefix = '', suffix = '') {
+export function join(
+	values: readonly RawValue[],
+	separator = ',',
+	prefix = '',
+	suffix = ''
+) {
 	if (values.length === 0) {
 		throw new TypeError(
 			'Expected `join([])` to be called with an array of multiple elements, but got an empty array'
 		);
 	}
 
-	return new Sql([prefix, ...Array(values.length - 1).fill(separator), suffix], values);
+	return new Sql(
+		[prefix, ...Array(values.length - 1).fill(separator), suffix],
+		values
+	);
 }
 
 /**
@@ -139,7 +147,10 @@ export function bulk(
 		return new Sql(['(', ...Array(item.length - 1).fill(separator), ')'], item);
 	});
 
-	return new Sql([prefix, ...Array(values.length - 1).fill(separator), suffix], values);
+	return new Sql(
+		[prefix, ...Array(values.length - 1).fill(separator), suffix],
+		values
+	);
 }
 
 /**
@@ -157,6 +168,9 @@ export const empty = raw('');
 /**
  * Create a SQL object from a template string.
  */
-export default function sql<T>(strings: readonly string[], ...values: readonly RawValue[]) {
+export default function sql<T>(
+	strings: readonly string[],
+	...values: readonly RawValue[]
+) {
 	return new Sql<T>(strings, values);
 }

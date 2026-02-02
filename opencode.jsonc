@@ -1,7 +1,8 @@
 {
-  "$schema": "https://opencode.ai/config.json",
-  // Theme configuration
-  "keybinds": {
-    "command_list": "ctrl+o"
-  }
+	"$schema": "https://opencode.ai/config.json",
+	// Theme configuration
+	"plugin": ["@sveltejs/opencode"],
+	"keybinds": {
+		"command_list": "ctrl+o"
+	}
 }

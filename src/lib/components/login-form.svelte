@@ -21,7 +21,11 @@
 	const id = $props.id();
 </script>
 
-<div class={cn('flex flex-col gap-6', className)} bind:this={ref} {...restProps}>
+<div
+	class={cn('flex flex-col gap-6', className)}
+	bind:this={ref}
+	{...restProps}
+>
 	<form>
 		<FieldGroup>
 			<div class="flex flex-col items-center gap-2 text-center">
@@ -38,7 +42,12 @@
 			</div>
 			<Field>
 				<FieldLabel for="email-{id}">Email</FieldLabel>
-				<Input id="email-{id}" type="email" placeholder="m@example.com" required />
+				<Input
+					id="email-{id}"
+					type="email"
+					placeholder="m@example.com"
+					required
+				/>
 			</Field>
 			<Field>
 				<Button type="submit">Login</Button>

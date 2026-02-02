@@ -29,7 +29,7 @@
 		<Button size="lg" variant="default" class="text-xl">Login</Button>
 	</header>
 	<Separator />
-	<div class="grow">
+	<div class="h-0 grow">
 		{@render children()}
 	</div>
 	<Separator />

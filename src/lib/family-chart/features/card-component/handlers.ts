@@ -11,10 +11,14 @@ interface TreeDatumComponent extends TreeDatum {
 export default function cardComponentSetup(cont: HTMLElement) {
 	const getSvgView = () => cont.querySelector('svg .view') as HTMLElement;
 	const getHtmlSvg = () => cont.querySelector('#htmlSvg') as HTMLElement;
-	const getHtmlView = () => cont.querySelector('#htmlSvg .cards_view') as HTMLElement;
+	const getHtmlView = () =>
+		cont.querySelector('#htmlSvg .cards_view') as HTMLElement;
 
 	createSvg(cont, { onZoom: onZoomSetup(getSvgView, getHtmlView) });
-	d3.select(getHtmlSvg()).append('div').attr('class', 'cards_view_fake').style('display', 'none'); // important for handling data
+	d3.select(getHtmlSvg())
+		.append('div')
+		.attr('class', 'cards_view_fake')
+		.style('display', 'none'); // important for handling data
 
 	return setupReactiveTreeData(getHtmlSvg);
 }
@@ -62,9 +66,14 @@ function setupReactiveTreeData(getHtmlSvg: () => HTMLElement) {
 		}
 	}
 
-	function getTreeDataExit(new_tree_data: TreeDatum[], old_tree_data: TreeDatum[]) {
+	function getTreeDataExit(
+		new_tree_data: TreeDatum[],
+		old_tree_data: TreeDatum[]
+	) {
 		if (old_tree_data.length > 0) {
-			return old_tree_data.filter((d) => !new_tree_data.find((t) => t.data.id === d.data.id));
+			return old_tree_data.filter(
+				(d) => !new_tree_data.find((t) => t.data.id === d.data.id)
+			);
 		} else {
 			return [];
 		}
@@ -72,12 +81,18 @@ function setupReactiveTreeData(getHtmlSvg: () => HTMLElement) {
 }
 
 export function getCardsViewFake(getHtmlSvg: () => HTMLElement) {
-	return d3.select(getHtmlSvg()).select('div.cards_view_fake').node() as HTMLElement;
+	return d3
+		.select(getHtmlSvg())
+		.select('div.cards_view_fake')
+		.node() as HTMLElement;
 }
 
 /** @deprecated This export will be removed in a future version. Use setupReactiveTreeData instead. */
 export function setupHtmlSvg(getHtmlSvg: () => HTMLElement) {
-	d3.select(getHtmlSvg()).append('div').attr('class', 'cards_view_fake').style('display', 'none'); // important for handling data
+	d3.select(getHtmlSvg())
+		.append('div')
+		.attr('class', 'cards_view_fake')
+		.style('display', 'none'); // important for handling data
 }
 
 /** @deprecated This export will be removed in a future version. Use setupReactiveTreeData instead. */

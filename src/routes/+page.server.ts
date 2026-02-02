@@ -1,22 +1,23 @@
 import { error } from '@sveltejs/kit';
-import { PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const r = await locals.db.findPersonByIds([1], { withRelations: false });
+	const treeId = 1;
 
-	if (!r.ok) {
-		return error(404, { message: `Id - ${1} does not exists` });
-	}
+	// Run queries in parallel
+	const [personsResult, unionsResult, linksResult] = await Promise.all([
+		locals.db.person.findByTreeId(treeId),
+		locals.db.union.findByTreeId(treeId),
+		locals.db.parentChild.findByTreeId(treeId)
+	]);
 
-	return r;
+	if (!personsResult.ok) throw error(500, personsResult.error.message);
+	if (!unionsResult.ok) throw error(500, unionsResult.error.message);
+	if (!linksResult.ok) throw error(500, linksResult.error.message);
+
+	return {
+		persons: personsResult.data,
+		unions: unionsResult.data,
+		links: linksResult.data
+	};
 };
-
-// export const load: PageServerLoad = async ({ locals: { db } }) => {
-// 	const result = await db.findPersonByIds([1], { withRelations: false });
-
-// 	if (!result.ok) {
-// 		return error(404, { message: `Id - ${1} does not exists` });
-// 	}
-
-// 	return result;
-// };

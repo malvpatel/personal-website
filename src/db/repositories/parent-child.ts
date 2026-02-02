@@ -73,6 +73,38 @@ export async function findByChildId(
 	}
 }
 
+export async function findByTreeId(
+	db: D1Database,
+	treeId: number
+): Promise<Result<ParentChild[], Error>> {
+	try {
+		const query = sql<ParentChildRow>`
+			SELECT pc.*
+			FROM parent_child pc
+			INNER JOIN person p ON pc.parent_id = p.id
+			WHERE p.tree_id = ${treeId}
+		`;
+
+		const result = await db
+			.prepare(query.sql)
+			.bind(...query.values)
+			.all<ParentChildRow>();
+
+		if (!result.success) {
+			return { ok: false, error: new Error('Query failed') };
+		}
+
+		return { ok: true, data: result.results.map(toParentChild) };
+	} catch (error) {
+		return {
+			ok: false,
+			error: new Error(`Failed to find relationships for tree: ${treeId}`, {
+				cause: error
+			})
+		};
+	}
+}
+
 // =============================================================================
 // MUTATIONS
 // =============================================================================
@@ -182,6 +214,7 @@ export async function remove(
 export const parentChildRepository = {
 	findByParentId,
 	findByChildId,
+	findByTreeId,
 	create,
 	update,
 	remove
