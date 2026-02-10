@@ -1,76 +1,81 @@
 <script lang="ts">
-	import { select, zoom } from 'd3';
-	import type { Attachment } from 'svelte/attachments';
 	import { type Snippet } from 'svelte';
 	import ZoomIndicator from '../zoom-indicator/zoom-indicator.svelte';
+	import { createPanZoom } from '../zoom-indicator/pan-and-zoom.svelte';
 
-	interface FamilyTreeProps {
-		children?: Snippet<[]>;
+	interface Position {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
 	}
 
-	let { children }: FamilyTreeProps = $props();
+	interface Person {
+		id: number;
+		firstName: string;
+		lastName: string;
+		// dateOfBirth: string;
+		// avatarUrl: string;
+		// gender: 'male' | 'female' | 'unknown';
+	}
 
-	const panAndZoom: Attachment<SVGElement | HTMLDivElement> = (el) => {
-		const behavior = zoom<SVGAElement | HTMLDivElement, null>().on(
-			'zoom',
-			(event) => {
-				const { transform } = event;
-				console.log(transform);
-				// el.style.transform = `translate(${transform.x}px, ${transform.y}px) scale(${transform.k})`;
-			}
-		);
+	interface FamilyTreeProps {
+		data: Person[];
+	}
 
-		select(el).call(behavior);
-	};
+	let { data }: FamilyTreeProps = $props();
 
-	// const createPanAndZoom = () => {
-	// 	let instance: PanZoom | null = null;
-	// 	const attach: Attachment<SVGElement | HTMLDivElement> = (el) => {
-	// 		instance = panzoom(el);
-	// 		return instance.dispose;
-	// 	};
-	// 	return {
-	// 		attach,
-	// 		zoomTo: (x: number, y: number, scale: number) => {
-	// 			instance?.zoomTo(scale, x, y);
-	// 		},
-	// 		moveTo: (x: number, y: number) => {
-	// 			instance?.moveTo(x, y);
-	// 		}
-	// 	};
-	// };
-
-	// const pAZHandle = createPanAndZoom();
-
-	// setTimeout(() => {
-	// 	pAZHandle.zoomTo(0, 0, 0.5);
-	// }, 5000);
+	const handle = createPanZoom();
 </script>
+
+{#snippet svgcard({ x, y, width, height }: Position)}
+	<g transform={`translate(${x}, ${y})`}>
+		<rect {width} {height} fill="white" rx="8" ry="8" />
+		<text
+			x={width / 2}
+			y={height / 2}
+			text-anchor="middle"
+			dominant-baseline="middle"
+			font-size="16"
+			fill="#374151"
+		>
+			Family Card
+		</text>
+	</g>
+{/snippet}
+
+{#snippet htmlcard({ x, y, width, height }: Position)}
+	<div
+		class="absolute"
+		style={`left: ${x}px; top: ${y}px; width: ${width}px; height: ${height}px;`}
+	>
+		<p>I am HTML Card</p>
+	</div>
+{/snippet}
 
 <div class="grid h-full grid-rows-[1fr_auto]">
 	<svg class="col-span-full row-span-full h-full w-full">
-		{@render children?.()}
-	</svg>
-	<div class="col-span-full row-span-full" {@attach panAndZoom}>
-		<h1>HELLO WORLD</h1>
-	</div>
-	<div class="col-span-full row-2 flex h-12 justify-center">
-		<ZoomIndicator />
-	</div>
-</div>
-
-<!-- <div class="relative h-full">
-	<svg class="h-full w-full">
-		<g {@attach pzHandle.attach}>
-			{@render children?.()}
+		<g transform={handle.transformAttribute}>
+			{@render svgcard({ x: 0, y: 0, width: 150, height: 100 })}
 		</g>
 	</svg>
-	<div class="absolute inset-0">
-		<div class="h-20 w-30 bg-red-100">
-			<p class="text-red-500">Hello World</p>
+	<div
+		class="col-span-full row-span-full overflow-hidden"
+		{@attach handle.attach}
+	>
+		<div
+			class="relative origin-top-left"
+			style={`transform: ${handle.transformStyle}`}
+		>
+			{@render htmlcard({ x: 0, y: 0, width: 150, height: 100 })}
 		</div>
 	</div>
-	<div class="absolute top-0 left-0 h-12 w-12">
-		<Slider type="single" max={100} step={1} />
+	<div class="col-span-full row-2 flex h-12 justify-center bg-background/40">
+		<ZoomIndicator
+			scalePercentage={handle.scalePercentage}
+			zoomReset={() => handle.zoomReset()}
+			zoomIn={() => handle.zoomIn(10)}
+			zoomOut={() => handle.zoomOut(10)}
+		/>
 	</div>
-</div> -->
+</div>
