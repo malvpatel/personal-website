@@ -11,13 +11,11 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { cn, type WithElementRef } from '$lib/utils.js';
-
 	let {
 		ref = $bindable(null),
 		class: className,
 		...restProps
 	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
-
 	const id = $props.id();
 </script>
 

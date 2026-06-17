@@ -1,49 +1,66 @@
-import { personRepository } from './repositories/person';
-import { treeRepository } from './repositories/tree';
-import { userRepository } from './repositories/user';
-import { unionRepository } from './repositories/union';
-import { parentChildRepository } from './repositories/parent-child';
-import { treeMemberRepository } from './repositories/tree-member';
-
-// Helper type to strip the first argument (db) from a function
-type BoundRepo<T> = {
-	[K in keyof T]: T[K] extends (db: D1Database, ...args: infer A) => infer R
-		? (...args: A) => R
-		: T[K];
-};
-
-export type Database = {
-	person: BoundRepo<typeof personRepository>;
-	tree: BoundRepo<typeof treeRepository>;
-	user: BoundRepo<typeof userRepository>;
-	union: BoundRepo<typeof unionRepository>;
-	parentChild: BoundRepo<typeof parentChildRepository>;
-	treeMember: BoundRepo<typeof treeMemberRepository>;
-};
-
-function bindRepo<T extends Record<string, any>>(
-	db: D1Database,
-	repo: T
-): BoundRepo<T> {
-	const bound: any = {};
-	for (const key of Object.keys(repo)) {
-		const prop = repo[key];
-		if (typeof prop === 'function') {
-			bound[key] = (...args: any[]) => prop(db, ...args);
-		} else {
-			bound[key] = prop;
-		}
-	}
-	return bound;
+interface User {
+	id: number;
+	email: string;
 }
 
-export function createCloudflareD1(db: D1Database): Database {
-	return {
-		person: bindRepo(db, personRepository),
-		tree: bindRepo(db, treeRepository),
-		user: bindRepo(db, userRepository),
-		union: bindRepo(db, unionRepository),
-		parentChild: bindRepo(db, parentChildRepository),
-		treeMember: bindRepo(db, treeMemberRepository)
+export interface Database {
+	users: {
+		create(email: string): Promise<User>;
+		getByID(id: number): Promise<User>;
+		getByEmail(email: string): Promise<User>;
+	};
+}
+
+export class DatabaseError extends Error {
+	constructor(sql: string, params: unknown[], message: string) {
+		super(message);
+		this.name = 'DatabaseError';
+	}
+}
+
+export class CloudflareD1 implements Database {
+	#db: D1Database;
+
+	constructor(db: D1Database) {
+		this.#db = db;
+	}
+
+	users = {
+		create: async (email: string) => {
+			const result = await this.#db
+				.prepare(`INSERT INTO users (email) VALUES (?) RETURNING id, email`)
+				.bind(email)
+				.first();
+
+			if (!result) {
+				throw new Error('Failed to create user');
+			}
+
+			return result as unknown as User;
+		},
+		getByID: async (id: number) => {
+			const result = await this.#db
+				.prepare('SELECT id, email FROM users WHERE id = ?')
+				.bind(id)
+				.first();
+
+			if (!result) {
+				throw new Error(`User with ID ${id} not found`);
+			}
+
+			return result as unknown as User;
+		},
+		getByEmail: async (email: string) => {
+			const result = await this.#db
+				.prepare('SELECT id, email FROM users WHERE email = ?')
+				.bind(email)
+				.first();
+
+			if (!result) {
+				throw new Error(`User with email ${email} not found`);
+			}
+
+			return result as unknown as User;
+		}
 	};
 }

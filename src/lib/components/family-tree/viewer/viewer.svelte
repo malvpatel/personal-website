@@ -2,6 +2,7 @@
 	import { type Snippet } from 'svelte';
 	import ZoomIndicator from '../zoom-indicator/zoom-indicator.svelte';
 	import { createPanZoom } from '../zoom-indicator/pan-and-zoom.svelte';
+	import { FamilyTree } from '../family-tree';
 
 	interface Position {
 		x: number;
@@ -20,10 +21,12 @@
 	}
 
 	interface FamilyTreeProps {
-		data: Person[];
+		people: Person[];
 	}
 
-	let { data }: FamilyTreeProps = $props();
+	const { people }: FamilyTreeProps = $props();
+
+	const ftree = $derived(FamilyTree.from(people));
 
 	const handle = createPanZoom();
 </script>
@@ -56,7 +59,9 @@
 <div class="grid h-full grid-rows-[1fr_auto]">
 	<svg class="col-span-full row-span-full h-full w-full">
 		<g transform={handle.transformAttribute}>
-			{@render svgcard({ x: 0, y: 0, width: 150, height: 100 })}
+			{#each ftree.svgCards() as svgRect}
+				{@render svgcard(svgRect)}
+			{/each}
 		</g>
 	</svg>
 	<div
@@ -67,7 +72,9 @@
 			class="relative origin-top-left"
 			style={`transform: ${handle.transformStyle}`}
 		>
-			{@render htmlcard({ x: 0, y: 0, width: 150, height: 100 })}
+			{#each ftree.htmlCards() as card}
+				{@render htmlcard(card)}
+			{/each}
 		</div>
 	</div>
 	<div class="col-span-full row-2 flex h-12 justify-center bg-background/40">
