@@ -9,4 +9,9 @@ export interface CardHtmlSelection extends Selection<
 	unknown
 > {}
 
-export interface LinkSelection extends Selection<SVGPathElement, Link, BaseType, unknown> {}
+export interface LinkSelection extends Selection<
+	SVGPathElement,
+	Link,
+	BaseType,
+	unknown
+> {}

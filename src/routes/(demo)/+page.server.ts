@@ -1,5 +1,5 @@
 import { fail } from '@sveltejs/kit';
-import { loginSchema } from '@/schema';
+import { loginSchema } from '#lib/schema/index.ts';
 
 import type { PageServerLoad } from './$types.js';
 

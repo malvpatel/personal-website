@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '@/components/ui/button/button.svelte';
-	import Separator from '@/components/ui/separator/separator.svelte';
+	import Button from '#/components/ui/button/button.svelte';
+	import Separator from '#/components/ui/separator/separator.svelte';
 
 	let { children, data } = $props();
 

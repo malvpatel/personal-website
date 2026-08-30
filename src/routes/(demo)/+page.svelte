@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { Input } from '@/components/ui/input';
+	import { Input } from '#lib/components/ui/input/index.ts';
 	import type { PageProps } from './$types';
-	// import { FamilyTreeViewer } from '@/components/family-tree/viewer';
-	import { Field, FieldLabel, FieldGroup } from '@/components/ui/field';
-	import { Button } from '@/components/ui/button';
-	import { Separator } from '@/components/ui/separator';
+	// import { FamilyTreeViewer } from '#lib/components/family-tree/viewer';
+	import {
+		Field,
+		FieldLabel,
+		FieldGroup
+	} from '#lib/components/ui/field/index.ts';
+	import { Button } from '#lib/components/ui/button/index.ts';
+	import { Separator } from '#lib/components/ui/separator/index.ts';
 
 	const { data, form }: PageProps = $props();
 

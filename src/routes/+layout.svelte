@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	import favicon from '$assets/favicon.svg';
+	import favicon from '#assets/favicon.svg';
 
 	import { ModeWatcher } from 'mode-watcher';
 
