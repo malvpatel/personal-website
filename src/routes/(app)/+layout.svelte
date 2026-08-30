@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '#/components/ui/button/button.svelte';
-	import Separator from '#/components/ui/separator/separator.svelte';
+	import { Button } from '#lib/components/ui/button/index.ts';
+	import { Separator } from '#lib/components/ui/separator/index.ts';
 
 	let { children, data } = $props();
 
@@ -27,9 +27,9 @@
 		<nav class="contents">
 			<ul class="contents">
 				<li>
-					<Button size="xs" variant="link" href={staticData.github}
-						>Github</Button
-					>
+					<Button size="xs" variant="link" href={staticData.github}>
+						Github
+					</Button>
 				</li>
 				<li>
 					Made by <Button size="xs" variant="link" href={staticData.malvpatel}>
