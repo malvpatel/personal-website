@@ -2,7 +2,7 @@
 	import ZoomIn from '@lucide/svelte/icons/zoom-in';
 	import ZoomOut from '@lucide/svelte/icons/zoom-out';
 	// import Slider from '../../ui/slider/slider.svelte';
-	import Button from '@/components/ui/button/button.svelte';
+	import Button from '#/components/ui/button/button.svelte';
 
 	interface ZoomIndicatorProps {
 		zoomIn: () => void;

@@ -31,11 +31,12 @@
 	],
 	"d1_databases": [
 		{
-			"binding": "FAMTREE",
-			"database_name": "FAMTREE",
-			"database_id": "11dbf752-5de0-42e8-a37c-c7d1fe1aa637"
+			"binding": "famtreedb",
+			"database_name": "famtreedb",
+			"database_id": "63335ec6-0c81-4c72-8bde-b5284500aa3d",
+			"remote": true
 		}
-	]
+	],
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

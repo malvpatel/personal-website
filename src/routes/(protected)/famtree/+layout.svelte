@@ -1,8 +1,16 @@
 <script lang="ts">
-	import Button from '@/components/ui/button/button.svelte';
-	import Separator from '@/components/ui/separator/separator.svelte';
+	import favicon from '#assets/favicon.svg';
 
-	let { children, data } = $props();
+	import { ModeWatcher } from 'mode-watcher';
+
+	import { authClient } from '#lib/auth/index.ts';
+
+	import { Button } from '#lib/components/ui/button/index.ts';
+	import { Separator } from '#lib/components/ui/separator/index.ts';
+
+	import { refreshAll } from '$app/navigation';
+
+	const { children } = $props();
 
 	const staticData = {
 		malvpatel: 'https://malvpatel.com',
@@ -11,12 +19,28 @@
 	};
 </script>
 
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
+
 <div class="flex min-h-dvh flex-col">
 	<header class="flex items-center gap-2 p-4">
 		<a class="text-4xl text-primary" href="/">Famtree</a>
 		<span class="grow"></span>
-		<span class="text-lg">Want to save your tree?</span>
-		<Button size="lg" href="/login" class="text-lg">Login</Button>
+		<Button
+			size="lg"
+			onclick={() =>
+				authClient.signOut({
+					fetchOptions: {
+						onSuccess(_ctx) {
+							refreshAll();
+						}
+					}
+				})}
+			class="text-lg"
+		>
+			Logout
+		</Button>
 	</header>
 	<Separator />
 	<div class="h-0 grow">
@@ -27,9 +51,9 @@
 		<nav class="contents">
 			<ul class="contents">
 				<li>
-					<Button size="xs" variant="link" href={staticData.github}
-						>Github</Button
-					>
+					<Button size="xs" variant="link" href={staticData.github}>
+						Github
+					</Button>
 				</li>
 				<li>
 					Made by <Button size="xs" variant="link" href={staticData.malvpatel}>
