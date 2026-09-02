@@ -15,7 +15,7 @@ export default defineConfig({
 			// for more information about preprocessors
 			preprocess: vitePreprocess(),
 			compilerOptions: { experimental: { async: true } },
-			adapter: adapter(),
+			adapter: adapter({ platformProxy: {} }),
 			experimental: { remoteFunctions: true }
 		}),
 		devtoolsJson()

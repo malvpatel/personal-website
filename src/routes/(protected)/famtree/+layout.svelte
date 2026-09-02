@@ -1,8 +1,16 @@
 <script lang="ts">
+	import favicon from '#assets/favicon.svg';
+
+	import { ModeWatcher } from 'mode-watcher';
+
+	import { authClient } from '#lib/auth/index.ts';
+
 	import { Button } from '#lib/components/ui/button/index.ts';
 	import { Separator } from '#lib/components/ui/separator/index.ts';
 
-	let { children, data } = $props();
+	import { refreshAll } from '$app/navigation';
+
+	const { children } = $props();
 
 	const staticData = {
 		malvpatel: 'https://malvpatel.com',
@@ -11,12 +19,28 @@
 	};
 </script>
 
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
+
 <div class="flex min-h-dvh flex-col">
 	<header class="flex items-center gap-2 p-4">
 		<a class="text-4xl text-primary" href="/">Famtree</a>
 		<span class="grow"></span>
-		<span class="text-lg">Want to save your tree?</span>
-		<Button size="lg" href="/login" class="text-lg">Login</Button>
+		<Button
+			size="lg"
+			onclick={() =>
+				authClient.signOut({
+					fetchOptions: {
+						onSuccess(_ctx) {
+							refreshAll();
+						}
+					}
+				})}
+			class="text-lg"
+		>
+			Logout
+		</Button>
 	</header>
 	<Separator />
 	<div class="h-0 grow">
